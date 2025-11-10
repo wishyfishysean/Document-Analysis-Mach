@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Research Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #2563eb;
+            font-size: 1.8rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            padding: 0.5rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .search-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-bar select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .documents-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .document-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .document-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .document-card.selected {
+            border: 2px solid #2563eb;
+        }
+
+        .document-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .document-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .document-date {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .document-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .document-summary {
+            color: #475569;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .keyword {
+            padding: 0.25rem 0.75rem;
+            background: #f1f5f9;
+            color: #475569;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .detail-panel {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-section h3 {
+            color: #1e293b;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .entities-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .entity {
+            padding: 0.25rem 0.75rem;
+            background: #f3e8ff;
+            color: #6b21a8;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            background: #fef3c7;
+            padding: 0.75rem;
+            border-radius: 6px;
+        }
+
+        .note-text {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-time {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .note-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .link-item {
+            padding: 0.75rem;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .link-item:hover {
+            background: #dbeafe;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .upload-area {
+            border: 3px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .upload-area.dragover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #2563eb;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 AI Research Hub</h1>
+        <button class="btn btn-primary" onclick="openUploadModal()">
+            📤 Upload Documents
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search documents, keywords, or topics..." onkeyup="searchDocuments()">
+            <select id="tagFilter" onchange="filterByTag()">
+                <option value="">All Topics</option>
+            </select>
+        </div>
+
+        <div id="loadingIndicator" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing documents with AI...</p>
+        </div>
+
+        <div class="content-grid">
+            <div class="documents-list" id="documentsList">
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <h3>No documents yet</h3>
+                    <p>Upload your first research document to get started</p>
+                </div>
+            </div>
+            <div class="detail-panel" id="detailPanel" style="display: none;">
+                <h2 id="detailTitle">Select a document</h2>
+                <div id="detailContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <h2>Upload Documents</h2>
+            <div class="upload-area" id="uploadArea">
+                <p>📄 Drag & drop files here or click to browse</p>
+                <input type="file" id="fileInput" multiple accept=".pdf,.txt" style="display: none;" onchange="handleFiles(this.files)">
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()" style="margin-top: 1rem;">
+                    Choose Files
+                </button>
+            </div>
+            <button class="btn btn-secondary" onclick="closeUploadModal()" style="margin-top: 1rem; width: 100%;">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let selectedDocId = null;
+
+        // Load documents on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDocuments();
+            loadTags();
+            setupDragAndDrop();
+        });
+
+        async function loadDocuments() {
+            try {
+                const response = await fetch(`${API_URL}/documents`);
+                const documents = await response.json();
+                displayDocuments(documents);
+            } catch (error) {
+                console.error('Error loading documents:', error);
+            }
+        }
+
+        async function loadTags() {
+            try {
+                const response = await fetch(`${API_URL}/tags`);
+                const tags = await response.json();
+                const select = document.getElementById('tagFilter');
+                select.innerHTML = '<option value="">All Topics</option>';
+                tags.forEach(tag => {
+                    const option = document.createElement('option');
+                    option.value = tag;
+                    option.textContent = tag;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading tags:', error);
+            }
+        }
+
+        function displayDocuments(documents) {
+            const container = document.getElementById('documentsList');
+            
+            if (documents.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <h3>No documents yet</h3>
+                        <p>Upload your first research document to get started</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = documents.map(doc => `
+                <div class="document-card ${selectedDocId === doc.id ? 'selected' : ''}" onclick="selectDocument(${doc.id})">
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">${doc.title}</div>
+                            <div class="document-date">${new Date(doc.upload_date).toLocaleDateString()}</div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="icon-btn" onclick="event.stopPropagation(); regenerateAnalysis(${doc.id})" title="Regenerate analysis">
+                                🔄
+                            </button>
+                            <button class="icon-btn" onclick="event.stopPropagation(); deleteDocument(${doc.id})" title="Delete">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                    <div class="document-summary">${doc.summary || 'No summary available'}</div>
+                    <div class="tags-container">
+                        ${doc.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="tags-container">
+                        ${doc.keywords.slice(0, 5).map(keyword => `<span class="keyword">${keyword}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function selectDocument(docId) {
+            selectedDocId = docId;
+            loadDocuments();
+            
+            try {
+                const response = await fetch(`${API_URL}/documents/${docId}`);
+                const doc = await response.json();
+                displayDocumentDetails(doc);
+            } catch (error) {
+                console.error('Error loading document details:', error);
+            }
+        }
+
+        function displayDocumentDetails(doc) {
+            const panel = document.getElementById('detailPanel');
+            const title = document.getElementById('detailTitle');
+            const content = document.getElementById('detailContent');
+            
+            panel.style.display = 'block';
+            title.textContent = doc.title;
+            
+            content.innerHTML = `
+                <div class="detail-section">
+                    <h3>📄 Summary</h3>
+                    <p>${doc.summary}</p>
+                </div>
+                
+                ${doc.entities && doc.entities.length > 0 ? `
+                    <div class="detail-section">
+                        <h3>🏷️ Key Entities</h3>
+                        <div class="entities-container">
+                            ${doc.entities.map(entity => `<span class="entity">${entity}</span>`).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="detail-section">
+                    <h3>💬 Notes</h3>
+                    <div class="notes-list">
+                        ${doc.notes && doc.notes.length > 0 ? doc.notes.map(note => `
+                            <div class="note-item">
+                                <div class="note-text">${note.note_text}</div>
+                                <div class="note-time">${new Date(note.timestamp).toLocaleString()}</div>
+                            </div>
+                        `).join('') : '<p style="color: #94a3b8;">No notes yet</p>'}
+                    </div>
+                    <input type="text" class="note-input" placeholder="Add a note..." onkeypress="if(event.key==='Enter') addNote(${doc.id}, this.value, this)">
+                </div>
+                
+                <div class="detail-section">
+                    <h3>🔗 Linked Documents</h3>
+                    <select onchange="if(this.value) linkDocument(${doc.id}, this.value, this)" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem;">
+                        <option value="">Link a document...</option>
+                    </select>
+                    <div class="links-list" id="linksList">
+                        ${doc.linked_docs && doc.linked_docs.length > 0 ? '' : '<p style="color: #94a3b8;">No linked documents</p>'}
+                    </div>
+                </div>
+            `;
+            
+            // Load available documents for linking
+            loadAvailableDocuments(doc.id);
+            
+            // Load linked documents
+            if (doc.linked_docs && doc.linked_docs.length > 0) {
+                loadLinkedDocuments(doc.linked_docs);
+            }
+        }
+
+        async function loadAvailableDocuments(currentDocId) {
+            try {
+                const response = await fetch(`${API_URL}/documents`);
+                const documents = await response.json();
+                const select = document.querySelector('#detailContent select');
+                
+                documents.forEach(doc => {
+                    if (doc.id !== currentDocId) {
+                        const option = document.createElement('option');
+                        option.value = doc.id;
+                        option.textContent = doc.title;
+                        select.appendChild(option);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading documents:', error);
+            }
+        }
+
+        async function loadLinkedDocuments(linkedIds) {
+            const container = document.getElementById('linksList');
+            
+            for (const id of linkedIds) {
+                try {
+                    const response = await fetch(`${API_URL}/documents/${id}`);
+                    const doc = await response.json();
+                    const linkDiv = document.createElement('div');
+                    linkDiv.className = 'link-item';
+                    linkDiv.textContent = `→ ${doc.title}`;
+                    linkDiv.onclick = () => selectDocument(doc.id);
+                    container.appendChild(linkDiv);
+                } catch (error) {
+                    console.error('Error loading linked document:', error);
+                }
+            }
+        }
+
+        async function addNote(docId, noteText, input) {
+            if (!noteText.trim()) return;
+            
+            try {
+                await fetch(`${API_URL}/documents/${docId}/notes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ note: noteText })
+                });
+                
+                input.value = '';
+                selectDocument(docId);
+            } catch (error) {
+                console.error('Error adding note:', error);
+            }
+        }
+
+        async function linkDocument(docId, linkedDocId, select) {
+            try {
+                await fetch(`${API_URL}/documents/${docId}/links`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ linked_doc_id: parseInt(linkedDocId) })
+                });
+                
+                select.value = '';
+                selectDocument(docId);
+            } catch (error) {
+                console.error('Error linking document:', error);
+            }
+        }
+
+        async function regenerateAnalysis(docId) {
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            try {
+                await fetch(`${API_URL}/documents/${docId}/regenerate`, {
+                    method: 'POST'
+                });
+                
+                loadDocuments();
+                if (selectedDocId === docId) {
+                    selectDocument(docId);
+                }
+            } catch (error) {
+                console.error('Error regenerating analysis:', error);
+            } finally {
+                document.getElementById('loadingIndicator').style.display = 'none';
+            }
+        }
+
+        async function deleteDocument(docId) {
+            if (!confirm('Are you sure you want to delete this document?')) return;
+            
+            try {
+                await fetch(`${API_URL}/documents/${docId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (selectedDocId === docId) {
+                    selectedDocId = null;
+                    document.getElementById('detailPanel').style.display = 'none';
+                }
+                
+                loadDocuments();
+            } catch (error) {
+                console.error('Error deleting document:', error);
+            }
+        }
+
+        async function handleFiles(files) {
+            document.getElementById('loadingIndicator').style.display = 'block';
+            closeUploadModal();
+            
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                try {
+                    await fetch(`${API_URL}/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                } catch (error) {
+                    console.error('Error uploading file:', error);
+                }
+            }
+            
+            loadDocuments();
+            loadTags();
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+
+        async function searchDocuments() {
+            const query = document.getElementById('searchInput').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/search?q=${encodeURIComponent(query)}`);
+                const documents = await response.json();
+                displayDocuments(documents);
+            } catch (error) {
+                console.error('Error searching documents:', error);
+            }
+        }
+
+        async function filterByTag() {
+            const tag = document.getElementById('tagFilter').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/search?tag=${encodeURIComponent(tag)}`);
+                const documents = await response.json();
+                displayDocuments(documents);
+            } catch (error) {
+                console.error('Error filtering documents:', error);
+            }
+        }
+
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+        }
+
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('uploadArea');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => {
+                    uploadArea.classList.add('dragover');
+                }, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => {
+                    uploadArea.classList.remove('dragover');
+                }, false);
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            }, false);
+        }
+    </script>
+</body>
+</html>
