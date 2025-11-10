@@ -1,0 +1,62 @@
+AI-Powered Research Hub
+Goal:
+Build a web-based research management app that lets users upload, organize, and analyze
+multiple research documents (PDF or text). The app automatically generates summaries, extracts
+keywords, and allows collaborative tagging, linking, and note-taking.
+Core Functionality
+1. Document Management
+- Upload multiple PDFs or text files
+- Extract text content from PDFs
+- Store documents and metadata (title, author, topic, tags) in a database
+- View documents in a clean, scrollable preview interface
+- Edit or delete uploaded files
+2. Smart Analysis (AI Assistant)
+- Automatically generate:
+- Document summaries
+- Keywords / key phrases
+- Named entities (people, orgs, topics)
+- Display these AI insights alongside each document
+- Option to regenerate or refine summaries
+3. Organization & Search
+- Tag documents by topic, author, or keyword
+- Filter and search documents dynamically (by tag, keyword, or title)
+- Allow custom folder/group creation
+4. Collaboration Features
+- Add comments or notes to documents
+- Link related documents (like citations or topic clusters)
+- Highlight and save snippets or quotes
+Tech Stack
+Backend: Python (Flask or FastAPI)
+Database: SQLite or PostgreSQL
+Frontend: HTML + CSS (with optional JS for live search/filtering)
+AI/NLP: transformers, spacy, or OpenAI API
+File Handling: PyMuPDF or pdfminer.six for text extraction
+Optional Extensions
+- Add a chat interface: ask questions like “Summarize all papers on climate models.”
+- Export summaries or notes as Markdown or PDF.
+- Integrate user accounts with login and personal document collections.
+- Add a visual knowledge map to show links between documents and topics.
+UI / UX Ideas
+- Dashboard: Grid or list of uploaded docs with small preview cards
+- Side Panel: Shows AI-generated summary, keywords, and editable notes
+- Top Search Bar: Live filter by title, author, tag, or keyword
+- Clean Styling: Light background, color accents for tags, and subtle shadows
+Example Folder Structure
+ai_research_hub/
+  app.py # Flask/FastAPI main app
+  templates/ # HTML templates
+    index.html
+    upload.html
+    document.html
+  static/ # CSS + JS
+    style.css
+    script.js
+  models/ # DB models (documents, tags, users)
+  utils/ # text extraction, AI summarization scripts
+  uploads/ # stored documents
+Example User Flow
+1. User uploads several research PDFs.
+2. Backend extracts text and runs summarization + keyword extraction.
+3. Summaries, tags, and key phrases are shown on the dashboard.
+4. User adds manual notes, links related documents, or highlights text.
+5. All changes are saved to the database for later retrieval
