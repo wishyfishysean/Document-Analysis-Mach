@@ -1,0 +1,199 @@
+# AI-Powered Research Hub
+
+A full-stack web application for managing, organizing, and analyzing research documents with AI-powered insights.
+
+## Features
+
+- **Upload & Extract**: Upload PDFs and text files with automatic text extraction
+- **AI Analysis**: Automatic summarization, keyword extraction, and entity recognition
+- **Smart Search**: Search by title, keywords, tags, or content
+- **Organization**: Tag and categorize documents by topic
+- **Collaboration**: Add notes and link related documents
+- **Document Linking**: Create relationships between research papers
+
+## Tech Stack
+
+**Backend:**
+- Python 3.8+
+- Flask (REST API)
+- SQLite (Database)
+- PyPDF2 (PDF text extraction)
+- Anthropic Claude API (AI analysis)
+
+**Frontend:**
+- HTML5
+- CSS3 (Modern styling with animations)
+- Vanilla JavaScript (Fetch API)
+
+## Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- pip (Python package manager)
+- Anthropic API key ([Get one here](https://console.anthropic.com/))
+
+### Step 1: Clone or Create Project Structure
+
+Create a folder called `ai_research_hub` with this structure:
+
+```
+ai_research_hub/
+├── app.py                  # Flask backend
+├── requirements.txt        # Python dependencies
+├── index.html             # Frontend interface
+├── uploads/               # Uploaded files (auto-created)
+└── research_hub.db        # SQLite database (auto-created)
+```
+
+### Step 2: Install Python Dependencies
+
+```bash
+cd ai_research_hub
+pip install -r requirements.txt
+```
+
+### Step 3: Set Up Environment Variables
+
+**On Windows:**
+```bash
+set ANTHROPIC_API_KEY=your_api_key_here
+```
+
+**On Mac/Linux:**
+```bash
+export ANTHROPIC_API_KEY=your_api_key_here
+```
+
+Or create a `.env` file:
+```
+ANTHROPIC_API_KEY=your_api_key_here
+```
+
+### Step 4: Run the Backend
+
+```bash
+python app.py
+```
+
+The Flask server will start at `http://localhost:5000`
+
+### Step 5: Open the Frontend
+
+Open `index.html` in your web browser, or serve it with:
+
+```bash
+# Python 3
+python -m http.server 8000
+```
+
+Then visit `http://localhost:8000`
+
+## Usage
+
+### Uploading Documents
+
+1. Click "Upload Documents" button
+2. Select PDF or text files
+3. The AI will automatically analyze each document:
+   - Generate a summary
+   - Extract keywords
+   - Identify key entities (people, organizations, topics)
+   - Categorize by topic
+
+### Searching & Filtering
+
+- Use the search bar to find documents by title, keywords, or content
+- Filter by topic using the dropdown menu
+
+### Adding Notes
+
+1. Click on any document to view details
+2. Type a note in the "Notes" section
+3. Press Enter to save
+
+### Linking Documents
+
+1. Select a document
+2. In the detail panel, choose a document from the "Link a document" dropdown
+3. Linked documents will appear below and can be clicked to navigate
+
+### Regenerating Analysis
+
+Click the 🔄 button on any document to regenerate its AI analysis with fresh insights.
+
+## API Endpoints
+
+### Documents
+- `GET /api/documents` - Get all documents
+- `GET /api/documents/<id>` - Get specific document
+- `POST /api/upload` - Upload new document
+- `DELETE /api/documents/<id>` - Delete document
+- `POST /api/documents/<id>/regenerate` - Regenerate AI analysis
+
+### Notes & Tags
+- `POST /api/documents/<id>/notes` - Add note
+- `POST /api/documents/<id>/tags` - Add tag
+- `POST /api/documents/<id>/links` - Link documents
+
+### Search
+- `GET /api/search?q=query` - Search documents
+- `GET /api/search?tag=topic` - Filter by tag
+- `GET /api/tags` - Get all tags
+
+## Database Schema
+
+**documents**: id, title, filename, file_path, content, summary, topic, upload_date, file_type
+
+**keywords**: id, doc_id, keyword
+
+**entities**: id, doc_id, entity
+
+**tags**: id, doc_id, tag
+
+**notes**: id, doc_id, note_text, timestamp
+
+**document_links**: id, doc_id, linked_doc_id
+
+## Troubleshooting
+
+### CORS Errors
+If you get CORS errors, make sure:
+1. The Flask server is running on port 5000
+2. The frontend is served from the same machine
+3. Flask-CORS is installed
+
+### PDF Extraction Issues
+If PDFs aren't extracting text:
+- Some PDFs are image-based and need OCR (not included)
+- Try a text-based PDF first
+- Check console for error messages
+
+### API Key Issues
+If AI analysis fails:
+- Verify your Anthropic API key is set correctly
+- Check you have API credits available
+- Look at Flask console for error messages
+
+## Optional Extensions
+
+Want to add more features? Try:
+
+- **User Authentication**: Add Flask-Login for multi-user support
+- **Export Features**: Export summaries as Markdown or PDF
+- **Knowledge Graph**: Visualize document relationships with D3.js
+- **OCR Support**: Add `pytesseract` for image-based PDFs
+- **Advanced Search**: Add full-text search with Elasticsearch
+- **Chat Interface**: Ask questions across all documents
+
+## License
+
+MIT License - Feel free to modify and use for your projects!
+
+## Support
+
+For issues or questions:
+1. Check the Flask console for backend errors
+2. Check browser console (F12) for frontend errors
+3. Verify all dependencies are installed
+4. Ensure API key is set correctly
